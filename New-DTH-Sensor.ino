@@ -7,7 +7,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-
 #define DHTPIN 4     // Digital pin connected to the DHT sensor
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
 // Pin 15 can work but DHT must be disconnected during program upload.
@@ -44,13 +43,13 @@ if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
   for(;;);
   }
 
-
   dht.begin();
-
+  
+  display.invertDisplay(true);
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(0, 0);
+  display.setCursor(0, 10);
   display.println("Iniatializing...");
   display.display();
   delay(2000);
@@ -71,7 +70,6 @@ void loop() {
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
     Serial.println(F("Failed to read from DHT sensor!"));
-    display.clearDisplay();
     display.setCursor(0, 0);
     display.println("Sensor Error!");
     display.display();
@@ -94,9 +92,11 @@ void loop() {
   Serial.println(F("°C "));
 
  // Display data on OLED
+  display.cp437(true); //To display the º symbol, we use the Code Page 437 font. For that, you need to set the cp437 to true and write the code 167
   display.clearDisplay();
+  display.invertDisplay(false);
   display.setTextSize(1);
-  display.setCursor(0, 0);
+  display.setCursor(0, 15);
 
   display.print("Humidity: ");
   display.print(h);
@@ -104,15 +104,21 @@ void loop() {
 
   display.print("Temp: ");
   display.print(t);
-  display.println(" C");
+  display.print(" ");
+  display.write(167);
+  display.println("C");
 
   display.print("Temp: ");
   display.print(f);
-  display.println(" F");
+  display.print(" ");
+  display.write(167);
+  display.println("F");
 
   display.print("Heat Index: ");
   display.print(hic);
-  display.println(" C");
+  display.print(" ");
+  display.write(167);
+  display.println("C");
 
   display.display();
 }
