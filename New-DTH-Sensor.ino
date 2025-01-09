@@ -79,7 +79,7 @@ void loop() {
   }
 
   // Compute heat index in Fahrenheit (the default)
-  float hif = dht.computeHeatIndex(f, h);
+//float hif = dht.computeHeatIndex(f, h);
   // Compute heat index in Celsius (isFahreheit = false)
   float hic = dht.computeHeatIndex(t, h, false);
 
@@ -88,6 +88,9 @@ void loop() {
   Serial.print(h);
   Serial.print(F("%  Temperature: "));
   Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(F("Heat Index: "));
+  Serial.print(hic);
   Serial.println(F("°C "));
 
  // Display data on OLED
@@ -106,6 +109,10 @@ void loop() {
   display.print("Temp: ");
   display.print(f);
   display.println(" F");
+
+  display.print("Heat Index: ");
+  display.print(hic);
+  display.println(" C");
 
   display.display();
 }
